@@ -51,3 +51,32 @@ function alteraBanner3() {
 }
 
 alteraBanner1();
+
+const btnOnOff = document.querySelector(".conteudo button");
+
+btnOnOff.addEventListener("click", ()=>{
+    const immLampada = document.querySelector(".conteudo img");
+
+    if(btnOnOff.textContent == "LIGAR"){
+        btnOnOff.textContent = "DESLIGAR"
+        immLampada.src = "./img/pic_bulbon.gif"
+    }else{
+        btnOnOff.textContent = "LIGAR"
+        immLampada.src = "./img/pic_bulboff.gif"
+    }
+})
+
+
+// function turninOff(){
+
+//     const immLampada = document.querySelector(".conteudo img");
+//     const btnOnOff = document.querySelector(".conteudo button");
+
+//     if(btnOnOff.textContent == "LIGAR"){
+//         btnOnOff.textContent = "DESLIGAR"
+//         immLampada.src = "./img/pic_bulbon.gif"
+//     }else{
+//         btnOnOff.textContent = "LIGAR"
+//         immLampada.src = "./img/pic_bulboff.gif"
+//     }
+// }
