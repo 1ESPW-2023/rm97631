@@ -1,21 +1,34 @@
 "use strct";
 
 //CRIANDO UM OBJETO
-const usuario1 = {
-    nomeUsuario:"pt001",
-    senhaUsuario:"12345"
-}
+//CRIANDO UMA LISTA DE OBJETOS 
 
-const usuario2 = {
-    nomeUsuario:"pt002",
-    senhaUsuario:"12345"
-}
+let listaDeUsuarios = [
+    {
+        nomeCompleto : "José da Silva",
+        nomeUsuario : "jose",
+        senhaUsuario : "123456",
+    }
+    ,
+    {
+        nomeCompleto : "Maria da silva",
+        nomeUsuario : "maria",
+        senhaUsuario : "123456",
+    }
+    ,
+    {
+        nomeCompleto : "João da Silva",
+        nomeUsuario : "joao",
+        senhaUsuario : "123456",
+    }
+
+]
 
 ///criar uma lisa de objetos
 
-let listaDeUsuarios = []
-listaDeUsuarios.push(usuario1);
-listaDeUsuarios.push(usuario2);
+// let listaDeUsuarios = []
+// listaDeUsuarios.push(usuario1);
+// listaDeUsuarios.push(usuario2);
 
 // listaDeUsuarios.forEach( (usuario)=>{
     
@@ -30,26 +43,39 @@ localStorage.setItem("listaUser", JSON.stringify(listaDeUsuarios));
 addEventListener("click", (evt)=>{
     if(evt.target.id == "btnSubmit"){
 
-        let usuarioInput = document.querySelector("#usuario").value;
-        let senhaInput = document.querySelector("#senha").value;
+        //Entrada do usuário
+        let usuarioValidado = {
+            usuarioInput : document.querySelector("#usuario").value,
+            senhaInput : document.querySelector("#senha").value
+        }
         const msgError = document.querySelector("#msgError");
-
         try{
 
             let listaUser = JSON.parse(localStorage.getItem("listaUser"));
 
             listaUser.forEach((usuario)=>{
 
-                if(usuarioInput == usuario.nomeUsuario && senhaInput == usuario.senhaUsuario){
+                if(usuarioValidado.usuarioInput == usuario.nomeUsuario && usuarioValidado.senhaInput == usuario.senhaUsuario){
+                    //Adicionando nova propiedade no objeto.
+                    usuarioValidado["nomeCompleto"] = usuario.nomeCompleto;
                     throw "USUÁRIO VALIDADO!";
                 }
             });
             throw "SENHA OU NOME DE USUÁRIO INVÁLIDO!";
-        }catch(err){
-            if(err == "USUÁRIO VALIDADO!"){
+        }catch(msg){
+            if(msg == "USUÁRIO VALIDADO!"){
                 
+                //Adicionando o objeto usuarioValidado no strage
+                localStorage.setItem("usuario-validado",JSON.stringify(usuarioValidado))
+
                 msgError.setAttribute("style","color:#00ff00;display:block;")
                 msgError.innerHTML = "<strong>Usuário validado!</strong>"
+
+                //Criando o sistema de redirect
+                setTimeout(function () {
+                    window.location.href = "../home.html";
+                }, 3000 );
+    
 
             }else{
                 msgError.setAttribute("style","color:#ff0000;display:block;");
