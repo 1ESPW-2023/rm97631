@@ -1,63 +1,86 @@
-"use strct";
+"use strict";
 
-//CRIANDO UM OBJETO
-const usuario1 = {
-    nomeUsuario:"pt001",
-    senhaUsuario:"12345"
-}
+//CRIANDO OBJETOS
+//CRIAR UMA LISTA DE OBJETOS
+let listaDeUsuarios = [
+    {
+        nomeCompleto : "José da Silva",
+        nomeUsuario : "jose",
+        senhaUsuario: "123456",
+        avatarUsuario : "./img/profile-42914_640.png"
+    }
+    ,
+    {
+        nomeCompleto : "Paulo da Silva",
+        nomeUsuario : "paulo",
+        senhaUsuario: "123456",
+        avatarUsuario : "./img/profile-42914_640.png"
+    }
+    ,
+    {
+        nomeCompleto : "Maria da Silva",
+        nomeUsuario : "maria",
+        senhaUsuario: "123456",
+        avatarUsuario : "./img/profile-42914_640.png"
+    }
+    ,
+    {
+        nomeCompleto : "João da Silva",
+        nomeUsuario : "joao",
+        senhaUsuario: "123456",
+        avatarUsuario : "./img/profile-42914_640.png"
+    }
+];
 
-const usuario2 = {
-    nomeUsuario:"pt002",
-    senhaUsuario:"12345"
-}
-
-///criar uma lisa de objetos
-
-let listaDeUsuarios = []
-listaDeUsuarios.push(usuario1);
-listaDeUsuarios.push(usuario2);
-
-// listaDeUsuarios.forEach( (usuario)=>{
-    
-//     console.log("NOME DE USUÁRIO : " + usuario.nomeUsuario);
-//     console.log("SENHA DE USUÁRIO : " + usuario.senhaUsuario);
-
-// });
-
-//Adicionado a lista de bjetos no localStorage
+// //Adicionando a lista de OBJETOS no localStorage
 localStorage.setItem("listaUser", JSON.stringify(listaDeUsuarios));
 
 addEventListener("click", (evt)=>{
     if(evt.target.id == "btnSubmit"){
-
-        let usuarioInput = document.querySelector("#usuario").value;
-        let senhaInput = document.querySelector("#senha").value;
         const msgError = document.querySelector("#msgError");
 
-        try{
+        //Entrada do usuário
+        let usuarioLogado = {
+            usuarioInputLogado : document.querySelector("#usuario").value,
+            senhaInputLogado : document.querySelector("#senha").value
+        }
 
-            let listaUser = JSON.parse(localStorage.getItem("listaUser"));
+        let usuarioValidado = {};
 
-            listaUser.forEach((usuario)=>{
+        let listaUser = JSON.parse(localStorage.getItem("listaUser"));
 
-                if(usuarioInput == usuario.nomeUsuario && senhaInput == usuario.senhaUsuario){
-                    throw "USUÁRIO VALIDADO!";
-                }
-            });
-            throw "SENHA OU NOME DE USUÁRIO INVÁLIDO!";
-        }catch(err){
-            if(err == "USUÁRIO VALIDADO!"){
+            for (let x = 0; x < listaUser.length; x++) {
                 
+                if(usuarioLogado.usuarioInputLogado == listaUser[x].nomeUsuario && usuarioLogado.senhaInputLogado == listaUser[x].senhaUsuario){
+                    //Adicionando nova propriedade no objeto.
+                    usuarioValidado = listaUser[x];
+                    break;
+                }
+            }
+
+
+            if(usuarioValidado.nomeUsuario != null){
+                
+                //Adicionando o objeto usuarioValidado no localStorage
+                localStorage.setItem("usuario-validado", JSON.stringify(usuarioValidado))
+
                 msgError.setAttribute("style","color:#00ff00;display:block;")
                 msgError.innerHTML = "<strong>Usuário validado!</strong>"
 
-            }else{
+                //Criar token para autenticação do usuário
+                const token = Math.random().toString(16).substring(2)+Math.random().toString(16).substring(2);
+                //Adicionando o token no localStorage
+                localStorage.setItem("usuario-token", token);
+
+                //Criando o sistema de redirect
+                setTimeout(function () {
+                    window.location.href = "../home.html";
+                }, 3000 );
+            }
+            else{
                 msgError.setAttribute("style","color:#ff0000;display:block;");
                 msgError.innerHTML = "<strong>Senha ou nome de Usuário inválidos!</strong>";
             }
-        }
-           
-
-
     }
+
 });
